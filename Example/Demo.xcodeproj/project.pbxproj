@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		7933253B2CBC298E006B536E /* ViewExtractor in Frameworks */ = {isa = PBXBuildFile; productRef = 7933253A2CBC298E006B536E /* ViewExtractor */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		793325282CBC296C006B536E /* Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Demo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -23,6 +27,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7933253B2CBC298E006B536E /* ViewExtractor in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -65,6 +70,7 @@
 			);
 			name = Demo;
 			packageProductDependencies = (
+				7933253A2CBC298E006B536E /* ViewExtractor */,
 			);
 			productName = Demo;
 			productReference = 793325282CBC296C006B536E /* Demo.app */;
@@ -94,6 +100,9 @@
 			);
 			mainGroup = 7933251F2CBC296C006B536E;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				793325392CBC298E006B536E /* XCRemoteSwiftPackageReference "ViewExtractor" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 793325292CBC296C006B536E /* Products */;
 			projectDirPath = "";
@@ -324,6 +333,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		793325392CBC298E006B536E /* XCRemoteSwiftPackageReference "ViewExtractor" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "git@github.com:GeorgeElsham/ViewExtractor.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		7933253A2CBC298E006B536E /* ViewExtractor */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 793325392CBC298E006B536E /* XCRemoteSwiftPackageReference "ViewExtractor" */;
+			productName = ViewExtractor;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 793325202CBC296C006B536E /* Project object */;
 }
