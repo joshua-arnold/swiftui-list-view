@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ContentView: View {    
     var body: some View {
-        ListView {
+        ListView(spacing: 16) {
             ForEach(0..<1000) { id in
                 Text(String(describing: id))
             }
@@ -17,6 +17,7 @@ struct ContentView: View {
             tableView.separatorStyle = .none
             tableView.allowsSelection = false
         }
+        .padding(.horizontal)
     }
 }
 

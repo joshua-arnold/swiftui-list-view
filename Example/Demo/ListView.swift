@@ -14,6 +14,7 @@ import SwiftUI
 @available(iOS 16.0, *)
 public struct ListView<Content: View>: View {
     
+    private let spacing: CGFloat
     private let content: () -> Content
     private let configure: (UITableView) -> Void
     
@@ -22,9 +23,11 @@ public struct ListView<Content: View>: View {
     ///   - content: The content to render in a list. Uses variadic views to create different cells.
     ///   - configure: Optionally configure the properties on the `UITableView`.
     public init(
+        spacing: CGFloat = 0,
         @ViewBuilder _ content: @escaping () -> Content,
         configure: @escaping (UITableView) -> Void = { _ in }
     ) {
+        self.spacing = spacing
         self.content = content
         self.configure = configure
     }
@@ -37,7 +40,13 @@ public struct ListView<Content: View>: View {
         UnaryViewRoot { views in
             ListViewRepresentable(
                 views: views.map {
-                    CellModel(id: $0.id, view: AnyView($0))
+                    CellModel(
+                        id: $0.id,
+                        view: AnyView(
+                            // Ignore adding spacing for the first view
+                            $0.padding(.top, $0.id == views.first?.id ? 0 : spacing)
+                        )
+                    )
                 },
                 configure: configure
             )
@@ -88,11 +97,7 @@ struct ListViewRepresentable: UIViewRepresentable {
     }
     
     func makeUIView(context: Context) -> UIViewType {
-        let tableView = UITableView()
-        context.coordinator.updateDataSourceIfNecessary(with: tableView)
-        tableView.delegate = context.coordinator
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: Coordinator.reuseIdentifier)
-        return tableView
+        context.coordinator.makeTableView()
     }
     
     func updateUIView(_ uiView: UIViewType, context: Context) {
@@ -111,18 +116,25 @@ extension ListViewRepresentable {
         
         private var dataSource: UITableViewDiffableDataSource<Int, CellModel>?
         
-        func updateDataSourceIfNecessary(with tableView: UITableView) {
+        func makeTableView() -> UITableView {
+            let tableView = UITableView()
+            tableView.delegate = self
+            tableView.register(UITableViewCell.self, forCellReuseIdentifier: Coordinator.reuseIdentifier)
+            
             self.dataSource = UITableViewDiffableDataSource<Int, CellModel>(tableView: tableView) {
                 (tableView: UITableView, indexPath: IndexPath, CellModel: CellModel) -> UITableViewCell? in
 
-                let cell = tableView.dequeueReusableCell(withIdentifier: Self.reuseIdentifier, for: indexPath)
-
+                let cell = tableView.dequeueReusableCell(withIdentifier: Self.reuseIdentifier, for: indexPath)                
                 cell.contentConfiguration = UIHostingConfiguration {
                     CellModel.view
                 }
+                .minSize(width: 0, height: 0)
+                .margins(.all, .zero)
 
                 return cell
             }
+            
+            return tableView
         }
         
         func reloadData(views: [CellModel]) {
